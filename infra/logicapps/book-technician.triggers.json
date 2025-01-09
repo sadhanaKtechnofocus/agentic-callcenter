@@ -1,0 +1,37 @@
+{
+  "HTTP": {
+    "inputs": {
+      "method": "POST",
+      "schema": {
+        "properties": {
+          "customer": {
+            "properties": {
+              "address": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "full_name": {
+                "type": "string"
+              },
+              "phone_number": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "service_sku": {
+            "type": "string"
+          },
+          "tc_accepted": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "kind": "Http",
+    "type": "Request"
+  }
+}

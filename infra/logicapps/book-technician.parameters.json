@@ -1,0 +1,10 @@
+{
+    "$connections": {
+        "type": "Object",
+        "defaultValue": {}
+    },
+    "recipientAddress": {
+        "type": "String",
+        "defaultValue": ""
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "HTTP": {
+        "type": "Request",
+        "kind": "Http",
+        "inputs": {
+            "method": "POST",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "service_sku": {
+                        "type": "string"
+                    },
+                    "customerCode": {
+                        "type": "string"
+                    },
+                    "issue": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

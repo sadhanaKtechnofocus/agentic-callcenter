@@ -1,0 +1,21 @@
+{
+    "Send_an_email_(V2)": {
+        "type": "ApiConnection",
+        "inputs": {
+            "host": {
+                "connection": {
+                    "name": "@parameters('$connections')['office365']['connectionId']"
+                }
+            },
+            "method": "post",
+            "body": {
+                "To": "@parameters('recipientAddress')",
+                "Subject": "New ticket @{triggerBody()?['service_sku']} for customer @{triggerBody()?['customerCode']}",
+                "Body": "<p>@{triggerBody()?['issue']}</p>",
+                "Importance": "Normal"
+            },
+            "path": "/v2/Mail"
+        },
+        "runAfter": {}
+    }
+}

@@ -1,0 +1,105 @@
+{
+  "Condition": {
+    "actions": {
+      "Send_Email(v2)": {
+        "inputs": {
+          "body": {
+            "Body": "<p>Dear @{triggerBody()?['customer']?['full_name']}, we're happy to let you know the service you request is now ready!</p>",
+            "Importance": "Normal",
+            "Subject": "Your service activation request has been completed!",
+            "To": "@triggerBody()?['customer']?['email']"
+          },
+          "host": {
+            "connection": {
+              "name": "@parameters('$connections')['office365']['connectionId']"
+            }
+          },
+          "method": "post",
+          "path": "/v2/Mail"
+        },
+        "type": "ApiConnection"
+      }
+    },
+    "else": {
+      "actions": {
+        "Send_Email(v2)_1": {
+          "inputs": {
+            "body": {
+              "Body": "<p>Dear @{triggerBody()?['customer']?['full_name']}, we're sorry we could not complete your service activation.</p><br>",
+              "Importance": "Normal",
+              "Subject": "Service activation could not be completed",
+              "To": "@triggerBody()?['customer']?['email']"
+            },
+            "host": {
+              "connection": {
+                "name": "@parameters('$connections')['office365']['connectionId']"
+              }
+            },
+            "method": "post",
+            "path": "/v2/Mail"
+          },
+          "type": "ApiConnection"
+        }
+      }
+    },
+    "expression": {
+      "and": [
+        {
+          "equals": [
+            "@body('Send_Approval')?['SelectedOption']",
+            "Approve"
+          ]
+        }
+      ]
+    },
+    "runAfter": {
+      "Send_Approval": ["SUCCEEDED"]
+    },
+    "type": "If"
+  },
+  "Send_Approval": {
+    "inputs": {
+      "body": {
+        "Message": {
+          "Body": "Customer @{triggerBody()?['customer']?['full_name']} has requested to enable service @{triggerBody()?['service_sku']}. Please proceed and then hit Approve when done to notify customer",
+          "HideHTMLMessage": false,
+          "Importance": "Normal",
+          "Options": "Approve, Decline",
+          "ShowHTMLConfirmationDialog": false,
+          "Subject": "Approval request",
+          "To": "@parameters('recipientAddress')"
+        },
+        "NotificationUrl": "@{listCallbackUrl()}"
+      },
+      "host": {
+        "connection": {
+          "name": "@parameters('$connections')['office365']['connectionId']"
+        }
+      },
+      "path": "/approvalmail/$subscriptions"
+    },
+    "runAfter": {
+      "Send_Email(v2)_2": ["SUCCEEDED"]
+    },
+    "type": "ApiConnectionWebhook"
+  },
+  "Send_Email(v2)_2": {
+    "inputs": {
+      "body": {
+        "Body": "<p>Dear @{triggerBody()?['customer']?['full_name']}<span>,\n    \n    We have received your request to activate the service.\n    \n    We will process your request shortly. Please wait for a confirmation email.\n    \n    Thank you for choosing our service.</span></p>",
+        "Importance": "Normal",
+        "Subject": "Service Activation Request recevied",
+        "To": "@triggerBody()?['customer']?['email']"
+      },
+      "host": {
+        "connection": {
+          "name": "@parameters('$connections')['office365']['connectionId']"
+        }
+      },
+      "method": "post",
+      "path": "/v2/Mail"
+    },
+    "runAfter": {},
+    "type": "ApiConnection"
+  }
+}

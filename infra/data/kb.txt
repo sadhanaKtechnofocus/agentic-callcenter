@@ -1,0 +1,22 @@
+# Common Issues and Solutions for customer technical support
+
+- Home Internet:
+    - Issue: No internet connection.
+    - Solutions: 
+        - Check the router's power supply and cables.
+        - Restart the router.
+        - Check the internet connection status LED on the router.
+- Mobile Internet:
+    - Issue: Slow internet connection or no connection.
+    - Solutions:
+        - Check the signal strength on the device.
+        - Restart the device.
+        - Check the data usage on the device.
+        - Suggest the customer to purchase additional data when the limit is reached.
+- All-in-One Bundle:
+    USE a combination of the solutions for Home Internet and Mobile Internet.
+- SIM Card:
+    - Issue: SIM card not detected.
+    - Solutions:
+        - Send an SMS with three starts (***) and check if the device returns an error code.
+        - If this tests fails, explain the customer they will need to replace the SIM card and route to the Activation to queue the SIM card replacement.
