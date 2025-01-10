@@ -9,7 +9,7 @@ from azure.identity import DefaultAzureCredential
 
 # Import the `configure_azure_monitor()` function from the
 # `azure.monitor.opentelemetry` package.
-from azure.monitor.opentelemetry import configure_azure_monitor
+# from azure.monitor.opentelemetry import configure_azure_monitor
 
 # # Import the tracing api from the `opentelemetry` package.
 # from opentelemetry import trace
@@ -39,13 +39,13 @@ def setup_logger():
     logger.addHandler(console_handler)
     
     # Disable the App Insights VERY verbose logger
-    logging.getLogger('azure.monitor').setLevel(logging.WARN)
+    # logging.getLogger('azure.monitor').setLevel(logging.WARN)
     
     # Add file system logging
     # file_handler = logging.FileHandler('api.log')
     # logger.addHandler(file_handler)
 
-    APPLICATIONINSIGHTS_CONNECTIONSTRING = os.getenv("APPLICATIONINSIGHTS_CONNECTIONSTRING")
-    if APPLICATIONINSIGHTS_CONNECTIONSTRING:
-        # Configure the Azure Monitor exporter
-        configure_azure_monitor(connection_string=APPLICATIONINSIGHTS_CONNECTIONSTRING)
+    # APPLICATIONINSIGHTS_CONNECTIONSTRING = os.getenv("APPLICATIONINSIGHTS_CONNECTIONSTRING")
+    # if APPLICATIONINSIGHTS_CONNECTIONSTRING:
+    #     # Configure the Azure Monitor exporter
+    #     configure_azure_monitor(connection_string=APPLICATIONINSIGHTS_CONNECTIONSTRING)

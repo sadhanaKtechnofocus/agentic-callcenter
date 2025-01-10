@@ -100,6 +100,13 @@ To run the application locally, follow these steps:
     ```bash
     azd env get-values > .env
     ```
+1. Edit the `.env` file and set
+    * `API_BASE_URL=http://localhost:3000`
+    * `TEAM_REMOTE_URL=http://localhost:7000`
+    
+> [!NOTE]
+> Dependencies should have already been installed by the deployment process, along with a local .venv environment.
+
 1. Open different terminals for each of the following steps:
     1. Run the agents host with `invoke start-host`
     1. Run the FastAPI API with `invoke start-api`

@@ -215,6 +215,8 @@ def speech_to_text(audio_file):
         model="whisper", file=audio_file
     )
 
+    logger.debug(f"Transcription response: {response}")
+
     return response.text
 
 # @cl.step(type="tool")
@@ -247,40 +249,50 @@ async def text_to_speech(text: str, mime_type: str):
                 print("Did you set the speech resource key and region values?")
    
     return "audio", filename
-    
+
+@cl.on_audio_start
+async def on_audio_start():
+    logger.debug("Audio started")
+    # NOTE: This is required to enable the audio stream
+    return True
+
+from pydub import AudioSegment
 @cl.on_audio_chunk
 async def on_audio_chunk(chunk: cl.InputAudioChunk):
-    if chunk.isStart:
-        buffer = BytesIO()
-        # This is required for whisper to recognize the file type
-        buffer.name = f"input_audio.{chunk.mimeType.split('/')[1]}"
-        # Initialize the session for a new audio stream
-        cl.user_session.set("audio_buffer", buffer)
-        cl.user_session.set("audio_mime_type", chunk.mimeType)
+    audio_buffer: AudioSegment = cl.user_session.get("audio_buffer")
     
+    if audio_buffer is None:
+        logger.debug(f"Audio buffer created, format {chunk.mimeType}")
+        audio_buffer = AudioSegment.empty()
+
     # For now, write the chunks to a buffer and transcribe the whole audio at the end
-    cl.user_session.get("audio_buffer").write(chunk.data)
+    audio_buffer += AudioSegment(
+        data=chunk.data,
+        sample_width=2,  # 16-bit
+        frame_rate=24000,
+        channels=2)
+    cl.user_session.set("audio_buffer", audio_buffer)
 
 
 @cl.on_audio_end
-async def on_audio_end(elements: list[ElementBased]):
+async def on_audio_end():
     # Get the audio buffer from the session
-    audio_buffer: BytesIO = cl.user_session.get("audio_buffer")
-    audio_buffer.seek(0)  # Move the file pointer to the beginning
-    audio_file = audio_buffer.read()
-    audio_mime_type: str = cl.user_session.get("audio_mime_type")
-
-    input_audio_el = cl.Audio(
-        mime=audio_mime_type, content=audio_file, name="" # Keep name empty to avoid displaying the label
-    )    
+    audio_buffer: AudioSegment = cl.user_session.get("audio_buffer")
+    audio_file = BytesIO()
+    audio_buffer.export(audio_file, format="wav")
     
-    whisper_input = (audio_buffer.name, audio_file, audio_mime_type)
+    whisper_input = ("input_audio.wav", audio_file, "wav")
     transcription = speech_to_text(whisper_input)
+    
+    input_audio_el = cl.Audio(
+        mime="wav", content=audio_file.getvalue(), 
+        name="" # Keep name empty to avoid displaying the label
+    )    
     await cl.Message(
         author="You", 
         type="user_message",
         content=transcription,
-        elements=[input_audio_el, *elements]
+        elements=[input_audio_el]
     ).send()
 
     conversation_id = get_conversation_id()    

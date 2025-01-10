@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Step 1 - Install dependencies
 WORKDIR /app
@@ -11,7 +11,6 @@ COPY libs/ /app/libs/
 
 # Step 4 - Install pip dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install /app/libs/vanilla_aiagents-1.0.0-py3-none-any.whl[remote]
 
 # Step 5 - Copy the rest of the files
 COPY . .

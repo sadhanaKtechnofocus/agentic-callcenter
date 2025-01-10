@@ -1,4 +1,4 @@
-from invoke import task, run
+from invoke import task
 
 @task
 def start_chat(c):
@@ -11,4 +11,3 @@ def start_api(c, port=3000):
 @task
 def start_host(c, port=7000):
     c.run(f"cd telco-team && python -m vanilla_aiagents.remote.run_host --source-dir . --host 0.0.0.0 --port {port}")
-    

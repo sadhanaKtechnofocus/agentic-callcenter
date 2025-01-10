@@ -42,15 +42,18 @@ hooks:
         shell: pwsh
         run: |
             python -m venv .venv
-            .venv/scripts/python -m pip install --upgrade pip
-            .venv/scripts/python -m pip install --upgrade setuptools
-            .venv/scripts/python -m pip install --upgrade cffi cryptography
-            .venv/scripts/python -m pip install -r ./infra/scripts/requirements.txt
         interactive: true
     postprovision: 
         shell: pwsh
         run: |
+            .venv/scripts/python -m pip install --upgrade pip
+            .venv/scripts/python -m pip install -r ./infra/scripts/requirements.txt
+
             .venv/scripts/python ./infra/scripts/setup_aisearch.py
             .venv/scripts/python ./infra/scripts/setup_cosmos.py
+            
+            .venv/scripts/python -m pip install -r ./telco-team/requirements.txt
+            .venv/scripts/python -m pip install -r ./api/requirements.txt
+            .venv/scripts/python -m pip install -r ./ui/requirements.txt
         interactive: true
         continueOnError: false
