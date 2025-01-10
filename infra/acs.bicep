@@ -154,6 +154,8 @@ resource msgEGSub 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2023-12-1
 
 output acsName string = acs.name
 output acsEndpoint string = acs.properties.hostName
+output acsTopicName string = acsEGTopic.name
+output acsTopicId string = acsEGTopic.id
 // output acsEmailDomainName string = acsEmailDomain.name
 // output acsEmailSender string = 'donotreply@${acsEmailDomain.properties.mailFromSenderDomain}'
 output sbNamespace string = serviceBusNamespace.name

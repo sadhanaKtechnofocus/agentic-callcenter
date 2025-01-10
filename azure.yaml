@@ -38,22 +38,24 @@ services:
             path: func.dockerfile
             remoteBuild: true
 hooks:
-    preup: 
-        shell: pwsh
-        run: |
-            python -m venv .venv
-        interactive: true
     postprovision: 
         shell: pwsh
         run: |
+            python -m venv .venv
             .venv/scripts/python -m pip install --upgrade pip
             .venv/scripts/python -m pip install -r ./infra/scripts/requirements.txt
 
             .venv/scripts/python ./infra/scripts/setup_aisearch.py
             .venv/scripts/python ./infra/scripts/setup_cosmos.py
+        interactive: true
+        continueOnError: false
+    postdeploy: 
+        shell: pwsh
+        run: |            
+            .venv/scripts/python ./infra/scripts/setup_voice_webhook.py
             
-            .venv/scripts/python -m pip install -r ./telco-team/requirements.txt
-            .venv/scripts/python -m pip install -r ./api/requirements.txt
-            .venv/scripts/python -m pip install -r ./ui/requirements.txt
+            cd telco-team && ../.venv/scripts/python -m pip install -r requirements.txt
+            cd ../api && ../.venv/scripts/python -m pip install -r requirements.txt
+            cd ../ui && ../.venv/scripts/python -m pip install -r requirements.txt
         interactive: true
         continueOnError: false

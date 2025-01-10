@@ -1,0 +1,39 @@
+import os
+from azure.identity import AzureDeveloperCliCredential
+from azure.core.exceptions import HttpResponseError
+from azure.mgmt.eventgrid import EventGridManagementClient
+
+# Load environment variables from azd environment
+from utils import load_azd_env
+
+load_azd_env()
+
+resource_group = os.getenv("AZURE_RESOURCE_GROUP")
+subscription_id = os.getenv("AZURE_SUBSCRIPTION_ID")
+topic_name = os.getenv("ACS_TOPIC_NAME")
+webhook_url = os.getenv("VOICE_WEBHOOK_URL")
+subscription_name = os.getenv("VOICE_SUBSCRIPTION_NAME")
+
+credential = AzureDeveloperCliCredential(tenant_id=os.getenv("AZURE_TENANT_ID"), process_timeout=60)
+client = EventGridManagementClient(credential, subscription_id)
+
+try:
+    print(f"Creating Event Subscription for {topic_name} under {resource_group} to {webhook_url}")
+    event_subscription = client.system_topic_event_subscriptions.begin_create_or_update(
+        resource_group,
+        topic_name,
+        subscription_name,
+        {
+            "destination": {
+                "endpointType": "WebHook",
+                "properties": {
+                    "endpointUrl": webhook_url
+                }
+            },
+            "filter": {
+                "included_event_types": ["Microsoft.Communication.IncomingCall"]
+            }
+        }
+    ).result()
+except HttpResponseError as e:
+    print(e)

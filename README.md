@@ -85,12 +85,19 @@ Most straitforward way to deploy this application is to use **Azure Developer CL
 > [!NOTE]
 > The deployment process will take some time to complete. You can monitor the progress in the terminal. Once the deployment is finished, all environment variables will be available in `.azure/<env name>/.env` file.
 
+### Phone calling integration
+> [!WARNING] Purchasing phone numbers cannot be automated at this time. You will need to follow the instructions in the [Azure Communication Services documentation](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/voice-calling/get-started?pivots=programming-language-python) to purchase a phone number and configure it.
+
+Infrastructure for phone calling integration is already deployed via EventGrid Webhook subscription to the `voice` Container App.
+
 ### WhatsApp integration
 
 > [!WARNING]
-> At this time there is no automated way to deploy the WhatsApp integration. You will need to follow the instructions in the [Azure Communication Services documentation](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account) to configure a phone number, associated it with WhatsApp Business profile and create a WhatsApp channel.
->
-> Then update the `ACS_CHANNEL_REGISTRATION_ID` environment variable in the Azure Container Apps settings to match it.
+> At this time there is no automated way to fully deploy the WhatsApp integration. You will need to follow the instructions in the [Azure Communication Services documentation](https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/advanced-messaging/whatsapp/connect-whatsapp-business-account) to configure a phone number, associated it with WhatsApp Business profile and create a WhatsApp channel.
+
+Two EventGrid subscription are already created for you, delivering to Service Bus Queues: one for incoming SMS (required to validate phone number) and one for incoming WhatsApp messages (polled by the Azure Function).
+
+Update the `ACS_CHANNEL_REGISTRATION_ID` environment variable in the Azure Container Apps settings to match it, in order to send responses back.
 
 ## Local development
 

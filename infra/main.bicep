@@ -186,19 +186,9 @@ module aca './aca.bicep' = {
   }
 }
 
-// module eg 'eg.bicep' = {
-//   name: 'eg'
-//   scope: rg
-//   params: {
-//     uniqueId: uniqueId
-//     prefix: prefix
-//     userAssignedIdentityResourceId: uami.outputs.identityId
-//     voiceWebHookUrl: aca.outputs.voiceEndpoint
-//   }
-// }
-
 // These outputs are copied by azd to .azure/<env name>/.env file
 // post provision script will use these values, too
+output AZURE_RESOURCE_GROUP string = rg.name
 output AZURE_TENANT_ID string = subscription().tenantId
 output AZURE_USER_ASSIGNED_IDENTITY_ID string = uami.outputs.identityId
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = acrModule.outputs.acrEndpoint
@@ -213,6 +203,7 @@ output COSMOSDB_DATABASE string = cosmosdb.outputs.cosmosDbDatabase
 output COSMOSDB_CONTAINER string = cosmosdb.outputs.cosmosDbContainer
 output COSMOSDB_CONFIG_CONTAINER string = cosmosdb.outputs.cosmosDbConfigContainer
 output ACS_ENDPOINT string = acs.outputs.acsEndpoint
+output ACS_TOPIC_RESOURCE_ID string = acs.outputs.acsTopicId
 output LOGIC_APPS_URL string = logicapp.outputs.approveServiceUrl
 output OPENTICKET_LOGIC_APPS_URL string = logicapp.outputs.openTicketUrl
 output AZURE_OPENAI_MODEL string = openAIModel
@@ -227,3 +218,5 @@ output AZURE_OPENAI_WHISPER_DEPLOYMENT string = openAIWhisperModel
 output SPEECH_KEY string = speech.outputs.speechServiceKey
 output COGNITIVE_SERVICES_ENDPOINT string = speech.outputs.speechServiceEndpoint
 output SPEECH_REGION string = location
+output VOICE_WEBHOOK_URL string = 'https://${aca.outputs.voiceEndpoint}/api/call'
+output VOICE_SUBSCRIPTION_NAME string = '${prefix}-call-sub-${uniqueId}'

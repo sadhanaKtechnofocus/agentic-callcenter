@@ -8,3 +8,4 @@ invoke==2.2.0
 setuptools>=75.8.0
 cffi>=1.17.1
 cryptography>=44.0.0
+azure.mgmt.eventgrid>=10.2.0
