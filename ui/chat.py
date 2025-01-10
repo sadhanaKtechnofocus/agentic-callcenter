@@ -279,20 +279,21 @@ async def on_audio_end():
     # Get the audio buffer from the session
     audio_buffer: AudioSegment = cl.user_session.get("audio_buffer")
     audio_file = BytesIO()
+    audio_buffer = audio_buffer.set_frame_rate(44100)
     audio_buffer.export(audio_file, format="wav")
     
     whisper_input = ("input_audio.wav", audio_file, "wav")
     transcription = speech_to_text(whisper_input)
     
-    input_audio_el = cl.Audio(
-        mime="wav", content=audio_file.getvalue(), 
-        name="" # Keep name empty to avoid displaying the label
-    )    
+    # input_audio_el = cl.Audio(
+    #     mime="wav", content=audio_file.getvalue(), 
+    #     name="" # Keep name empty to avoid displaying the label
+    # )    
     await cl.Message(
         author="You", 
         type="user_message",
         content=transcription,
-        elements=[input_audio_el]
+        # elements=[input_audio_el]
     ).send()
 
     conversation_id = get_conversation_id()    
