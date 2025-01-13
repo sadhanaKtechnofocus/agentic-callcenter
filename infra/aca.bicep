@@ -337,4 +337,4 @@ resource uiContainerApp 'Microsoft.App/containerApps@2023-11-02-preview' = {
   }
 }
 
-output voiceEndpoint string = voiceContainerApp.properties.latestRevisionFqdn
+output voiceEndpoint string = voiceContainerApp.properties.configuration.ingress.fqdn

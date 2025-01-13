@@ -78,10 +78,11 @@ async def incoming_call_handler(req: Request):
             if event.event_type == SystemEventNames.EventGridSubscriptionValidationEventName:
                 logger.info("Validating WebHook subscription")
                 validation_url = event.data['validationUrl']
+                validation_code = event.data['validationCode']
                 async with aiohttp.ClientSession() as client:
                     await client.get(validation_url)
                 
-                return JSONResponse(status_code=200)
+                return JSONResponse(content={"validationResponse": validation_code}, status_code=200)
             
             # Handle the incoming call event
             elif event.event_type =="Microsoft.Communication.IncomingCall":
