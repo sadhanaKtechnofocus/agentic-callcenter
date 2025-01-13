@@ -1,7 +1,0 @@
-POST https://dev-voice-3u4py5swjucua.icywater-8a6961e3.eastus2.azurecontainerapps.io/api/call HTTP/1.1
-Content-Type: application/json
-
-[{
-  "event_type": "Microsoft.EventGrid.SubscriptionValidationEvent",
-  "validationUrl": "https://www.google.com"
-}]
