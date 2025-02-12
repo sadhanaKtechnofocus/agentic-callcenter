@@ -26,6 +26,8 @@ param openAIResourceGroupName string
 @description('Email address to send approval requests to')
 param emailRecipientAddress string
 
+param runningOnGh string = ''
+
 param embeddingModel string
 param openAIModel string
 param openAIWhisperModel string
@@ -44,6 +46,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
 }
 
 var uniqueId = uniqueString(rg.id)
+var currentUserType = empty(runningOnGh) ? 'User' : 'ServicePrincipal'
 
 module uami './uami.bicep' = {
   name: 'uami'
@@ -86,6 +89,7 @@ module cosmosdb './cosmos.bicep' = {
     location: location
     userAssignedIdentityPrincipalId: uami.outputs.principalId
     currentUserId: currentUserId
+    currentUserType: currentUserType
   }
 }
 
@@ -142,6 +146,7 @@ module storage './storage.bicep' = {
     userAssignedIdentityPrincipalId: uami.outputs.principalId
     location: location
     currentUserId: currentUserId
+    currentUserType: currentUserType
   }
 }
 
@@ -155,6 +160,7 @@ module search 'search.bicep' = {
     userAssignedIdentityResourceId: uami.outputs.identityId
     location: location
     currentUserId: currentUserId
+    currentUserType: currentUserType
   }
 }
 

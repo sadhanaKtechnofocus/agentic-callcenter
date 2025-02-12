@@ -5,6 +5,8 @@ param userAssignedIdentityPrincipalId string
 param userAssignedIdentityResourceId string
 param location string = resourceGroup().location
 param currentUserId string
+param currentUserType string
+
 
 resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   name: '${prefix}-search-${uniqueId}'
@@ -54,7 +56,7 @@ resource searchRoleAssignmentUser 'Microsoft.Authorization/roleAssignments@2020-
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '8ebe5a00-799e-43f5-93ac-243d3dce84a7') // Role definition ID for Contributor
     principalId: currentUserId
-    principalType: 'User'
+    principalType: currentUserType
   }
 }
 resource searchAdminRoleAssignmentUser 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
@@ -63,7 +65,7 @@ resource searchAdminRoleAssignmentUser 'Microsoft.Authorization/roleAssignments@
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7ca78c08-252a-4471-8644-bb5ff32d4ba0') // Role definition ID for Contributor
     principalId: currentUserId
-    principalType: 'User'
+    principalType: currentUserType
   }
 }
 

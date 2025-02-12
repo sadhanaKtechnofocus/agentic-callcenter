@@ -11,6 +11,9 @@
       "location": {
         "value": "${AZURE_LOCATION}"
       },
+      "runningOnGh": {
+        "value": "${GITHUB_ACTIONS}"
+      },
       "openAiName": {
         "value": "${AZURE_OPENAI_NAME}"
       },

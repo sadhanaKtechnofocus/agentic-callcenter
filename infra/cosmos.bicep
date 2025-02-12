@@ -6,6 +6,7 @@ param databaseName string = 'telco-callcenter-agents'
 param containerName string = 'conversations'
 param location string = resourceGroup().location
 param currentUserId string
+param currentUserType string
 
 // Create Cosmos DB account
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {

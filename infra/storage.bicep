@@ -3,6 +3,7 @@ param prefix string
 @secure()
 param userAssignedIdentityPrincipalId string
 param currentUserId string
+param currentUserType string
 param location string = resourceGroup().location
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
@@ -54,7 +55,7 @@ resource blobRoleAssignmentUser 'Microsoft.Authorization/roleAssignments@2020-04
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
     principalId: currentUserId
-    principalType: 'User'
+    principalType: currentUserType
   }
 }
 resource storageAccountContributorRoleAssignmentUser 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
@@ -63,7 +64,7 @@ resource storageAccountContributorRoleAssignmentUser 'Microsoft.Authorization/ro
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')
     principalId: currentUserId
-    principalType: 'User'
+    principalType: currentUserType
   }
 }
 

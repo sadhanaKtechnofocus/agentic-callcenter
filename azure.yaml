@@ -59,6 +59,3 @@ hooks:
             cd ../ui && ../.venv/scripts/python -m pip install -r requirements.txt
         interactive: true
         continueOnError: false
-pipeline:
-  secrets:
-    - AZD_INITIAL_ENVIRONMENT_CONFIG
