@@ -33,6 +33,10 @@ jobs:
       - name: Install azd
         uses: Azure/setup-azd@v2.1.0
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+
       # azd set up Federated Credential by default. You can remove this step if you are using Client Credentials
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}
