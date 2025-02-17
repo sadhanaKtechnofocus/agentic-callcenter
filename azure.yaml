@@ -42,20 +42,22 @@ hooks:
         shell: pwsh
         run: |
             python -m venv .venv
-            .venv\Scripts\python -m pip install --upgrade pip
-            .venv\Scripts\python -m pip install -r ./infra/scripts/requirements.txt
+            .\.venv\Scripts\Activate
+            pip install --upgrade pip
+            pip install -r ./infra/scripts/requirements.txt
 
-            .venv\Scripts\python ./infra/scripts/setup_aisearch.py
-            .venv\Scripts\python ./infra/scripts/setup_cosmos.py
+            python ./infra/scripts/setup_aisearch.py
+            python ./infra/scripts/setup_cosmos.py
         interactive: true
         continueOnError: false
     postdeploy: 
         shell: pwsh
         run: |
-            .venv\Scripts\python ./infra/scripts/setup_voice_webhook.py
+            .\.venv\Scripts\Activate
+            python ./infra/scripts/setup_voice_webhook.py
             
-            cd telco-team && ../.venv\Scripts\python -m pip install -r requirements.txt
-            cd ../api && ../.venv\Scripts\python -m pip install -r requirements.txt
-            cd ../ui && ../.venv\Scripts\python -m pip install -r requirements.txt
+            cd telco-team && pip install -r requirements.txt
+            cd ../api && pip install -r requirements.txt
+            cd ../ui && pip install -r requirements.txt
         interactive: true
         continueOnError: false
